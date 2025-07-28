@@ -2,12 +2,13 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Header from '@components/Header.astro';
 import ContactForm from '@components/ContactForm';
+import Footer from '@components/Footer.astro';
 ---
 
 <BaseLayout title="Contact - Andrew Gauntlet">
   <Header />
   
-  <main class="pt-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-16">
+  <main class="flex-1 pt-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-16">
     <div class="py-12">
       <h1 class="text-4xl font-bold mb-8 text-center">Get In Touch</h1>
       
@@ -19,4 +20,6 @@ import ContactForm from '@components/ContactForm';
       <ContactForm client:load />
     </div>
   </main>
+  
+  <Footer />
 </BaseLayout>
