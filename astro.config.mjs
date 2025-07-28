@@ -1,17 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
-import tailwindcss from '@tailwindcss/vite';
-
 import react from '@astrojs/react';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ph0rque.github.io',
-
+  integrations: [react()],
   vite: {
     plugins: [tailwindcss()]
-  },
-
-  integrations: [react()]
+  }
 });
