@@ -1,0 +1,13 @@
+{
+  "title": "DealDone",
+  "description": "A smart marketplace platform that streamlines peer-to-peer transactions with AI-powered deal matching and secure digital agreements.",
+  "fullDescription": "DealDone transforms how people conduct peer-to-peer transactions by combining AI-powered deal matching with secure digital agreements. Created during Week 3 of the Gauntlet AI program, this platform uses machine learning algorithms to match buyers and sellers, suggest fair prices based on market data, and facilitate secure transactions through digital handshakes. The trust score system helps users make informed decisions, while automated negotiation suggestions streamline the deal-making process. DealDone makes buying and selling safer, faster, and more efficient.",
+  "technologies": ["Python", "Machine Learning", "Next.js", "PostgreSQL", "Smart Contracts"],
+  "videoUrl": "https://youtu.be/zXg6QE4_PqQ",
+  "links": {
+    "github": "https://github.com/ph0rque/dealdone"
+  },
+  "featured": true,
+  "order": 3,
+  "publishedAt": "2024-01-29"
+}
