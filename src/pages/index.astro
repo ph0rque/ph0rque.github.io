@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Header from '@components/Header.astro';
+import ProjectGrid from '@components/ProjectGrid.astro';
+---
+
+<BaseLayout title="Andrew Gauntlet - Portfolio">
+  <Header />
+  
+  <main class="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-16">
+    <h1 class="sr-only">Portfolio Projects</h1>
+    <ProjectGrid />
+  </main>
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+const projects = await getCollection('projects');
+const sortedProjects = projects.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) {
+    return a.data.featured ? -1 : 1;
+  }
+  return (a.data.order || 0) - (b.data.order || 0);
+});
+---
+
+<div class="project-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+  {sortedProjects.map((project, index) => (
+    <ProjectCard project={project} index={index} />
+  ))}
+</div>
+
+<div id="modal-container"></div>
+
+<script define:vars={{ projects: sortedProjects }}>
+  window.__PORTFOLIO_PROJECTS__ = projects;
+</script>
+
+<script>
+  import Modal from '@components/Modal';
+  import React from 'react';
+  import ReactDOM from 'react-dom/client';
+  
+  let root = null;
+  const modalContainer = document.getElementById('modal-container');
+  
+  function openModal(projectId) {
+    const project = window.__PORTFOLIO_PROJECTS__.find(p => p.id === projectId);
+    if (!project || !modalContainer) return;
+    
+    if (!root) {
+      root = ReactDOM.createRoot(modalContainer);
+    }
+    
+    root.render(
+      React.createElement(Modal, {
+        isOpen: true,
+        onClose: () => {
+          root.render(
+            React.createElement(Modal, {
+              isOpen: false,
+              onClose: () => {},
+              project: null
+            })
+          );
+        },
+        project: project
+      })
+    );
+  }
+  
+  // Handle project card clicks
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const projectId = card.getAttribute('data-project-id');
+      if (projectId) openModal(projectId);
+    });
+  });
+</script>

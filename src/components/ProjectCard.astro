@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const { data } = project;
+
+// Extract YouTube video ID from URL
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+  return match ? match[1] : null;
+}
+
+const videoId = getYouTubeId(data.videoUrl);
+const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/placeholder.jpg');
+---
+
+<article 
+  class="project-card group cursor-pointer"
+  data-project-id={project.id}
+  data-project-index={index}
+>
+  <!-- Video Thumbnail -->
+  <div class="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4">
+    <img 
+      src={thumbnailUrl} 
+      alt={`${data.title} preview`}
+      loading="lazy"
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+    <!-- Play button overlay -->
+    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
+      <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+        <svg class="w-8 h-8 text-gray-900 ml-1" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Project Info -->
+  <div class="space-y-2">
+    <h3 class="text-lg font-semibold group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+      {data.title}
+    </h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+      {data.description}
+    </p>
+    <!-- Tech tags -->
+    <div class="flex flex-wrap gap-2">
+      {data.technologies.slice(0, 3).map(tech => (
+        <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-gray-700 dark:text-gray-300">
+          {tech}
+        </span>
+      ))}
+      {data.technologies.length > 3 && (
+        <span class="text-xs px-2 py-1 text-gray-500 dark:text-gray-400">
+          +{data.technologies.length - 3} more
+        </span>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

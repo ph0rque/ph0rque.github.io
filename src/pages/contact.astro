@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Header from '@components/Header.astro';
+import ContactForm from '@components/ContactForm';
+---
+
+<BaseLayout title="Contact - Andrew Gauntlet">
+  <Header />
+  
+  <main class="pt-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-16">
+    <div class="py-12">
+      <h1 class="text-4xl font-bold mb-8 text-center">Get In Touch</h1>
+      
+      <p class="text-lg text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+        Have a project in mind or want to collaborate? I'd love to hear from you. 
+        Send me a message and I'll get back to you as soon as possible.
+      </p>
+      
+      <ContactForm client:load />
+    </div>
+  </main>
+</BaseLayout>
