@@ -17,11 +17,32 @@
 </button>
 
 <script>
-  // Only run this once per page
+  // Initialize theme from localStorage or system preference
+  const initTheme = () => {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  // Initialize theme immediately
+  initTheme();
+
+  // Set up click handlers once DOM is loaded
   if (!window.__themeToggleInitialized) {
     window.__themeToggleInitialized = true;
     
-    // Add click handlers to all theme toggle buttons
     document.addEventListener('DOMContentLoaded', () => {
       const toggleButtons = document.querySelectorAll('.theme-toggle');
       
