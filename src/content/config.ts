@@ -7,7 +7,8 @@ const projectsCollection = defineCollection({
     description: z.string(),
     fullDescription: z.string(),
     technologies: z.array(z.string()),
-    videoUrl: z.string().url(),
+    url: z.string().url(),
+    urlType: z.enum(['video', 'presentation']),
     videoThumbnail: z.string().optional(),
     links: z.object({
       live: z.string().url().optional(),

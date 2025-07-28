@@ -6,8 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ph0rque.github.io',
-  integrations: [react()],
+  integrations: [react({
+    include: ['**/react/*', '**/*.tsx', '**/*.jsx']
+  })],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react/jsx-runtime']
+    }
   }
 });

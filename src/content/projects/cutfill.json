@@ -3,7 +3,8 @@
   "description": "A construction cost optimization tool that calculates the most efficient earthwork operations for site development.",
   "fullDescription": "CutFill is a specialized construction technology application developed during Week 5 of the Gauntlet AI intensive program. It helps construction professionals optimize earthwork operations by calculating the most cost-effective cut and fill strategies for site development. The tool analyzes topographical data, material costs, and equipment availability to provide optimal solutions that minimize both costs and environmental impact.",
   "technologies": ["Python", "Geospatial Analysis", "React", "Three.js", "PostgreSQL"],
-  "videoUrl": "https://youtu.be/BDOU-5zT1ik",
+  "url": "https://youtu.be/BDOU-5zT1ik",
+  "urlType": "video",
   "links": {
     "github": "https://github.com/ph0rque/cutfill"
   },

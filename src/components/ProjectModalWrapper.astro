@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectModal from './ProjectModal.tsx';
+
+const projects = await getCollection('projects');
+---
+
+<ProjectModal client:only="react" projects={projects} />

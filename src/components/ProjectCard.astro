@@ -15,7 +15,7 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-const videoId = getYouTubeId(data.videoUrl);
+const videoId = data.urlType === 'video' ? getYouTubeId(data.url) : null;
 const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/placeholder.jpg');
 ---
 
@@ -32,12 +32,18 @@ const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/
       loading="lazy"
       class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
     />
-    <!-- Play button overlay -->
+    <!-- Play/View button overlay -->
     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
       <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-        <svg class="w-8 h-8 text-gray-900 ml-1" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-        </svg>
+        {data.urlType === 'video' ? (
+          <svg class="w-8 h-8 text-gray-900 ml-1" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+          </svg>
+        ) : (
+          <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+          </svg>
+        )}
       </div>
     </div>
   </div>

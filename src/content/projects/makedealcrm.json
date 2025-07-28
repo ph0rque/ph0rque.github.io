@@ -3,7 +3,8 @@
   "description": "A streamlined CRM platform designed for small businesses to manage customer relationships and sales pipelines effectively.",
   "fullDescription": "MakeDealCRM is a customer relationship management system developed during Week 6 of the Gauntlet AI intensive program. It provides small businesses with an intuitive platform to track leads, manage customer interactions, and optimize their sales processes. The system features AI-powered lead scoring, automated follow-up reminders, customizable sales pipelines, and comprehensive analytics to help businesses close more deals and improve customer satisfaction.",
   "technologies": ["TypeScript", "Next.js", "Supabase", "OpenAI API", "Tailwind CSS"],
-  "videoUrl": "https://youtu.be/JVC83Sw984o",
+  "url": "https://youtu.be/JVC83Sw984o",
+  "urlType": "video",
   "links": {
     "github": "https://github.com/ph0rque/makedealcrm"
   },

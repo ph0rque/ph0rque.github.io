@@ -4,7 +4,8 @@ export interface Project {
   description: string;
   fullDescription: string;
   technologies: string[];
-  videoUrl: string;
+  url: string;
+  urlType: 'video' | 'presentation';
   videoThumbnail?: string;
   links: {
     live?: string;

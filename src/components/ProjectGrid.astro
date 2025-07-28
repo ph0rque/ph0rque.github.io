@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
+import ProjectModal from './ProjectModal.tsx';
 
 const projects = await getCollection('projects');
 const sortedProjects = projects.sort((a, b) => {
@@ -17,50 +18,4 @@ const sortedProjects = projects.sort((a, b) => {
   ))}
 </div>
 
-<div id="modal-container"></div>
-
-<script define:vars={{ projects: sortedProjects }}>
-  window.__PORTFOLIO_PROJECTS__ = projects;
-</script>
-
-<script>
-  import Modal from '@components/Modal';
-  import React from 'react';
-  import ReactDOM from 'react-dom/client';
-  
-  let root = null;
-  const modalContainer = document.getElementById('modal-container');
-  
-  function openModal(projectId) {
-    const project = window.__PORTFOLIO_PROJECTS__.find(p => p.id === projectId);
-    if (!project || !modalContainer) return;
-    
-    if (!root) {
-      root = ReactDOM.createRoot(modalContainer);
-    }
-    
-    root.render(
-      React.createElement(Modal, {
-        isOpen: true,
-        onClose: () => {
-          root.render(
-            React.createElement(Modal, {
-              isOpen: false,
-              onClose: () => {},
-              project: null
-            })
-          );
-        },
-        project: project
-      })
-    );
-  }
-  
-  // Handle project card clicks
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const projectId = card.getAttribute('data-project-id');
-      if (projectId) openModal(projectId);
-    });
-  });
-</script>
+<ProjectModal client:only="react" projects={sortedProjects} />

@@ -1,0 +1,15 @@
+{
+  "title": "AigentPro",
+  "description": "An AI-powered agent framework that enables businesses to build and deploy intelligent automation agents for complex workflows.",
+  "fullDescription": "AigentPro is an advanced AI agent framework developed during Week 4 of the Gauntlet AI intensive program. It empowers businesses to create sophisticated AI agents that can autonomously handle complex multi-step workflows. The platform features a visual agent builder, natural language processing capabilities, integration with popular business tools, and a robust orchestration engine. AigentPro agents can perform tasks ranging from customer service automation to data analysis and report generation, significantly improving operational efficiency and reducing manual workload.",
+  "technologies": ["Python", "LangChain", "OpenAI API", "React", "Node.js", "Redis", "Docker"],
+  "url": "https://docs.google.com/presentation/d/15RaHZz4XRb-GnRYkVsE0GpVHh_p07rNnZmp_UB-6D2o/edit",
+  "urlType": "presentation",
+  "videoThumbnail": "/project-images/aigentpro.gif",
+  "links": {
+    "github": "https://github.com/ph0rque/aigentpro"
+  },
+  "featured": false,
+  "order": 4,
+  "publishedAt": "2024-02-05"
+}

@@ -34,7 +34,7 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
   if (!isOpen || !project) return null;
 
   const { data } = project;
-  const videoId = getYouTubeId(data.videoUrl);
+  const videoId = data.urlType === 'video' ? getYouTubeId(data.url) : null;
 
   return (
     <div 
@@ -60,8 +60,8 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
 
         {/* Content */}
         <div className="overflow-y-auto max-h-[90vh] p-6 md:p-8">
-          {/* Video embed */}
-          {videoId && (
+          {/* Video/Presentation embed */}
+          {data.urlType === 'video' && videoId ? (
             <div className="aspect-video mb-6 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
               <iframe
                 src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
@@ -71,7 +71,16 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
                 allowFullScreen
               />
             </div>
-          )}
+          ) : data.urlType === 'presentation' ? (
+            <div className="aspect-video mb-6 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+              <iframe
+                src={data.url}
+                title={data.title}
+                className="w-full h-full"
+                allowFullScreen
+              />
+            </div>
+          ) : null}
 
           {/* Project details */}
           <div className="space-y-4">
