@@ -53,16 +53,15 @@ export default function ContactForm() {
     setSubmitStatus('idle');
     
     try {
-      // Replace with your actual form submission endpoint
-      // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('https://formspree.io/f/xanbjpvz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
       
-      // In production, you would send to your form handler:
-      // const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
       
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });

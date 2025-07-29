@@ -106,9 +106,9 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
             </div>
 
             {/* Links */}
-            {(data.links.live || data.links.github || data.links.other) && (
+            {(data.links?.live || data.links?.github || data.links?.other) && (
               <div className="flex flex-wrap gap-3 pt-4">
-                {data.links.live && (
+                {data.links?.live && (
                   <a
                     href={data.links.live}
                     target="_blank"
@@ -118,7 +118,7 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
                     View Live
                   </a>
                 )}
-                {data.links.github && (
+                {data.links?.github && (
                   <a
                     href={data.links.github}
                     target="_blank"
@@ -128,7 +128,7 @@ export default function Modal({ isOpen, onClose, project }: ModalProps) {
                     GitHub
                   </a>
                 )}
-                {data.links.other?.map((link) => (
+                {data.links?.other?.map((link) => (
                   <a
                     key={link.url}
                     href={link.url}

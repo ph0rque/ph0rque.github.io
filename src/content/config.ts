@@ -17,7 +17,7 @@ const projectsCollection = defineCollection({
         label: z.string(),
         url: z.string().url()
       })).optional()
-    }),
+    }).optional(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
     publishedAt: z.string().transform(str => new Date(str))

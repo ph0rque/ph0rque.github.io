@@ -1,14 +1,11 @@
 {
   "title": "WordWise",
-  "description": "An AI-powered language learning assistant that helps users expand their vocabulary through contextual learning.",
-  "fullDescription": "WordWise is an innovative language learning application developed during Week 1 of the Gauntlet AI intensive program. It leverages advanced natural language processing to analyze text in real-time, providing instant definitions, translations, and usage examples. The app features personalized learning recommendations, progress tracking with spaced repetition, and context-aware word definitions to help users effectively expand their vocabulary.",
-  "technologies": ["Python", "Natural Language Processing", "OpenAI API", "React", "Node.js"],
+  "description": "An AI-powered writing assistant that helps students write better essays while providing educators with integrity insights and progress tracking.",
+  "fullDescription": "WordWise is an innovative writing assistant developed during Week 1 of the Gauntlet AI intensive program. For Students, it provides instant grammar and spelling help with clear explanations to help learn the rules, suggests smarter word choices for more sophisticated vocabulary, and includes an AI Essay Coach that helps develop thinking without doing the writing. For Educators, it offers grade-level analysis to verify appropriate writing complexity, writing process insights through keystroke recordings to verify original work and understand idea development, and detailed analytics to track student progress over time. The platform ensures academic integrity while supporting genuine student growth in writing skills.",
+  "technologies": ["Web App", "Typescript", "React", "OpenAI API", "Supabase"],
   "url": "https://youtu.be/CsbrlbRJDMI",
   "urlType": "video",
-  "links": {
-    "github": "https://github.com/ph0rque/wordwise"
-  },
   "featured": true,
   "order": 1,
-  "publishedAt": "2024-01-15"
+  "publishedAt": "2025-06-21"
 }

@@ -1,14 +1,11 @@
 {
   "title": "SnapAMeal",
-  "description": "An innovative food tracking application that uses computer vision to instantly analyze meals and provide nutritional information.",
-  "fullDescription": "SnapAMeal revolutionizes nutritional tracking for busy college students. Developed during Week 2 of the Gauntlet AI program, this app uses advanced computer vision and machine learning to identify food items from photos and calculate detailed nutritional information. Simply snap a photo of your meal, and SnapAMeal provides instant analysis of calories, macronutrients, vitamins, and minerals. The app maintains a comprehensive meal history, tracks nutritional trends over time, and offers personalized dietary recommendations based on your goals.",
-  "technologies": ["Python", "Computer Vision", "TensorFlow", "React Native", "FastAPI"],
+  "description": "An AI-powered health and wellness social platform with intelligent meal recognition, personalized coaching, and community features.",
+  "fullDescription": "Developed during Week 2 of the Gauntlet AI intensive program, SnapAMeal is an advanced AI-powered health and wellness social platform built with Flutter and Firebase, featuring revolutionary intelligent meal recognition, comprehensive health tracking, personalized AI coaching, community features, and cutting-edge nutritional analysis. Originally inspired by Snapchat's social mechanics, SnapAMeal has evolved into a complete health transformation platform with state-of-the-art meal analysis capabilities.",
+  "technologies": ["Mobile App", "Dart", "Flutter", "Firebase", "Pinecone", "OpenAI API"],
   "url": "https://youtu.be/CkPnCQIdlMg",
   "urlType": "video",
-  "links": {
-    "github": "https://github.com/ph0rque/snapameal"
-  },
   "featured": true,
   "order": 2,
-  "publishedAt": "2024-01-22"
+  "publishedAt": "2025-06-29"
 }

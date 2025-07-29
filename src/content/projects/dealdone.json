@@ -1,14 +1,11 @@
 {
   "title": "DealDone",
-  "description": "A smart marketplace platform that streamlines peer-to-peer transactions with AI-powered deal matching and secure digital agreements.",
-  "fullDescription": "DealDone transforms how people conduct peer-to-peer transactions by combining AI-powered deal matching with secure digital agreements. Created during Week 3 of the Gauntlet AI program, this platform uses machine learning algorithms to match buyers and sellers, suggest fair prices based on market data, and facilitate secure transactions through digital handshakes. The trust score system helps users make informed decisions, while automated negotiation suggestions streamline the deal-making process. DealDone makes buying and selling safer, faster, and more efficient.",
-  "technologies": ["Python", "Machine Learning", "Next.js", "PostgreSQL", "Smart Contracts"],
+  "description": "A desktop app that automates M&A document management with intelligent categorization, analysis, and template-based insights for business acquisitions.",
+  "fullDescription": "DealDone is a desktop application designed to streamline the complex document management process in business acquisitions and M&A deals. Upon installation, it creates an organized folder structure on your desktop where you can store template files. When you drag and drop deal documents into the designated folder, DealDone automatically categorizes them - NDAs go to the legal folder, financial statements to the financial folder, and CIMs to the general folder. The app analyzes these documents in the background, populating your templates with extracted data and saving the results to an analysis folder with confidence levels that improve over time. As you add more documents from sellers or brokers, DealDone continuously updates its analysis. You can manually edit the auto-filled templates, and the system learns from your corrections.",
+  "technologies": ["Desktop App", "Go", "Wails", "TypeScript"],
   "url": "https://youtu.be/zXg6QE4_PqQ",
   "urlType": "video",
-  "links": {
-    "github": "https://github.com/ph0rque/dealdone"
-  },
   "featured": true,
   "order": 3,
-  "publishedAt": "2024-01-29"
+  "publishedAt": "2025-07-06"
 }

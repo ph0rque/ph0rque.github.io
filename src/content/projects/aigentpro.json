@@ -1,15 +1,12 @@
 {
   "title": "AigentPro",
-  "description": "An AI-powered agent framework that enables businesses to build and deploy intelligent automation agents for complex workflows.",
-  "fullDescription": "AigentPro is an advanced AI agent framework developed during Week 4 of the Gauntlet AI intensive program. It empowers businesses to create sophisticated AI agents that can autonomously handle complex multi-step workflows. The platform features a visual agent builder, natural language processing capabilities, integration with popular business tools, and a robust orchestration engine. AigentPro agents can perform tasks ranging from customer service automation to data analysis and report generation, significantly improving operational efficiency and reducing manual workload.",
-  "technologies": ["Python", "LangChain", "OpenAI API", "React", "Node.js", "Redis", "Docker"],
+  "description": "A comprehensive Electron app for real estate professionals featuring AI-powered document generation, negotiation support, and secure document management.",
+  "fullDescription": "AIgent Pro is a production-ready Electron application designed for real estate professionals to streamline offer preparation, negotiation support, and document management. It features advanced role-based authentication with agent verification and client onboarding, AI-powered document generation using GPT-4 for creating context-aware cover letters and negotiation strategies, and professional document management with customizable branding. The platform includes negotiation support tools with interactive dashboards and AI-powered strategy recommendations, secure document sharing with granular permissions and analytics, and a mobile-responsive design optimized for field agents with offline capabilities. AIgent Pro integrates cutting-edge AI capabilities with practical real estate workflows to help agents work more efficiently and close deals faster.",
+  "technologies": ["Desktop App (Electron)", "Firebase", "TypeScript", "React"],
   "url": "https://docs.google.com/presentation/d/15RaHZz4XRb-GnRYkVsE0GpVHh_p07rNnZmp_UB-6D2o/edit",
   "urlType": "presentation",
   "videoThumbnail": "/project-images/aigentpro.gif",
-  "links": {
-    "github": "https://github.com/ph0rque/aigentpro"
-  },
   "featured": false,
   "order": 4,
-  "publishedAt": "2024-02-05"
+  "publishedAt": "2025-07-13"
 }

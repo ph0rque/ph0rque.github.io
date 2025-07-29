@@ -1,14 +1,11 @@
 {
   "title": "MakeDealCRM",
-  "description": "A streamlined CRM platform designed for small businesses to manage customer relationships and sales pipelines effectively.",
-  "fullDescription": "MakeDealCRM is a customer relationship management system developed during Week 6 of the Gauntlet AI intensive program. It provides small businesses with an intuitive platform to track leads, manage customer interactions, and optimize their sales processes. The system features AI-powered lead scoring, automated follow-up reminders, customizable sales pipelines, and comprehensive analytics to help businesses close more deals and improve customer satisfaction.",
-  "technologies": ["TypeScript", "Next.js", "Supabase", "OpenAI API", "Tailwind CSS"],
+  "description": "A specialized CRM system designed for solo dealmakers and micro-PE investors, using deal-centric architecture.",
+  "fullDescription": "MakeDealCRM is a specialized CRM system designed specifically for solo dealmakers including business buyers, micro-PE investors, and search fund principals. Built around the Deal as the central object rather than traditional CRM modules, it streamlines the entire acquisition lifecycle from sourcing through post-acquisition management. Key features include auto-capture of deals from multiple sources (email, CSV, Chrome extension), an 11-stage visual pipeline with time-in-stage tracking, personal due-diligence checklist templates with progress tracking, simplified stakeholder management with role-based organization, and a comprehensive financial valuation hub with real-time calculations and comparables analysis. The system is designed for single operators to efficiently manage multiple deals without administrative overhead, featuring mobile optimization, one-click AWS deployment.",
+  "technologies": ["MySQL", "Elasticsearch", "PHP 7.4", "Smarty", "Bootstrap"],
   "url": "https://youtu.be/JVC83Sw984o",
   "urlType": "video",
-  "links": {
-    "github": "https://github.com/ph0rque/makedealcrm"
-  },
   "featured": false,
   "order": 6,
-  "publishedAt": "2024-02-19"
+  "publishedAt": "2025-07-27"
 }
