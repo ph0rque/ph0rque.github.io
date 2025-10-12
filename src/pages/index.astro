@@ -1,17 +1,25 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Header from '@components/Header.astro';
-import ProjectGrid from '@components/ProjectGrid.astro';
-import Footer from '@components/Footer.astro';
+import AboutSection from '@components/homepage/AboutSection.astro';
+import ContactSection from '@components/homepage/ContactSection';
+import ProjectGallery from '@components/homepage/ProjectGallery.astro';
+import SplitScreenLayout from '@components/homepage/SplitScreenLayout';
 ---
 
 <BaseLayout title="Andrew Shindyapin Portfolio">
   <Header />
   
-  <main class="flex-1 pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-16">
-    <h1 class="sr-only">Portfolio Projects</h1>
-    <ProjectGrid />
+  <main>
+    <SplitScreenLayout client:load>
+      <div>
+        <AboutSection />
+        <ContactSection client:load />
+      </div>
+      <div>
+        <ProjectGallery />
+      </div>
+    </SplitScreenLayout>
   </main>
-  
-  <Footer />
 </BaseLayout>
+

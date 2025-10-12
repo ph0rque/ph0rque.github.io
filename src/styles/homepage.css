@@ -1,0 +1,108 @@
+/**
+ * Homepage Split-Screen Layout Styles
+ */
+
+/* ========================================
+   SPLIT SCREEN CONTAINER
+   ======================================== */
+
+.split-screen-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ========================================
+   PANES
+   ======================================== */
+
+.split-pane {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.split-pane::-webkit-scrollbar {
+  width: 8px;
+}
+
+.split-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.split-pane::-webkit-scrollbar-thumb {
+  background: var(--divider);
+  border-radius: 4px;
+}
+
+.split-pane::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+.left-pane {
+  width: 50%;
+  padding: 4rem 3rem;
+  background: var(--bg-primary);
+}
+
+.right-pane {
+  width: 50%;
+  padding: 4rem 3rem;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--divider);
+}
+
+/* ========================================
+   LOGO DIVIDER COLUMN (Hidden - logo is overlaid)
+   ======================================== */
+
+.logo-divider-column {
+  display: none;
+}
+
+/* ========================================
+   RESPONSIVE - Mobile/Tablet
+   ======================================== */
+
+@media (max-width: 1023px) {
+  .split-screen-container {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  
+  .split-pane {
+    width: 100% !important;
+    height: auto;
+    overflow-y: visible;
+  }
+  
+  .left-pane,
+  .right-pane {
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+  
+  .logo-divider-column {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .left-pane,
+  .right-pane {
+    padding: 5rem 4rem;
+  }
+}
+
+/* ========================================
+   LAYOUT CONTAINMENT (Performance)
+   ======================================== */
+
+.split-pane {
+  contain: layout style paint;
+}
+

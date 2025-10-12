@@ -82,9 +82,13 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-xl">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-2">
+        <label 
+          htmlFor="name" 
+          className="block text-sm font-medium mb-2"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Name
         </label>
         <input
@@ -93,9 +97,13 @@ export default function ContactForm() {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 
-            ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'}
-            focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+          style={{
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: errors.name ? '#ef4444' : 'var(--divider)',
+            color: 'var(--text-primary)',
+          }}
+          className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition-colors
+            focus:border-[var(--accent)]`}
           disabled={isSubmitting}
         />
         {errors.name && (
@@ -104,7 +112,11 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-2">
+        <label 
+          htmlFor="email" 
+          className="block text-sm font-medium mb-2"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Email
         </label>
         <input
@@ -113,9 +125,13 @@ export default function ContactForm() {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 
-            ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'}
-            focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+          style={{
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: errors.email ? '#ef4444' : 'var(--divider)',
+            color: 'var(--text-primary)',
+          }}
+          className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition-colors
+            focus:border-[var(--accent)]`}
           disabled={isSubmitting}
         />
         {errors.email && (
@@ -124,7 +140,11 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium mb-2">
+        <label 
+          htmlFor="message" 
+          className="block text-sm font-medium mb-2"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Message
         </label>
         <textarea
@@ -133,9 +153,13 @@ export default function ContactForm() {
           rows={5}
           value={formData.message}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 resize-none
-            ${errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'}
-            focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+          style={{
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: errors.message ? '#ef4444' : 'var(--divider)',
+            color: 'var(--text-primary)',
+          }}
+          className={`w-full px-4 py-3 border-2 rounded-lg resize-none outline-none transition-colors
+            focus:border-[var(--accent)]`}
           disabled={isSubmitting}
         />
         {errors.message && (
@@ -158,10 +182,14 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full py-3 px-6 rounded-lg font-medium transition-colors
+        style={{
+          backgroundColor: isSubmitting ? '#9ca3af' : 'var(--accent)',
+          color: 'white',
+        }}
+        className={`w-full py-3 px-6 rounded-lg font-semibold transition-all
           ${isSubmitting 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+            ? 'cursor-not-allowed' 
+            : 'hover:bg-[var(--accent-hover)] hover:shadow-lg'}`}
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </button>

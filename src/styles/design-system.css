@@ -1,0 +1,117 @@
+/**
+ * Phoenix Design System
+ * Color palette extracted from phoenix logo
+ */
+
+:root {
+  /* ========================================
+     COLOR TOKENS - Phoenix Palette
+     ======================================== */
+  
+  /* Navy/Dark Blues (Top of Phoenix) */
+  --color-navy-950: #0a1628;
+  --color-navy-900: #0f1f3d;
+  --color-navy-800: #162a52;
+  
+  /* Silver/Light Blues (Phoenix Wings) */
+  --color-silver-400: #a8c5d9;
+  --color-silver-300: #c1d9e8;
+  --color-silver-200: #d4e6f1;
+  --color-silver-100: #e8f2f7;
+  
+  /* Purples/Magentas (Middle Gradient) */
+  --color-purple-200: #e8d4f1;
+  --color-purple-300: #d4b8e6;
+  --color-purple-400: #b88dd9;
+  --color-purple-500: #9b6bc9;
+  
+  /* Oranges (Phoenix Flames) */
+  --color-flame-400: #ff9d5c;
+  --color-flame-500: #ff7b3d;
+  --color-flame-600: #ff5722;
+  --color-flame-700: #f04318;
+  
+  /* Yellows (Flame Highlights) */
+  --color-gold-300: #ffd966;
+  --color-gold-400: #ffcc33;
+  
+  /* ========================================
+     SEMANTIC THEME VARIABLES - Light Mode
+     ======================================== */
+  
+  --bg-primary: var(--color-purple-200);
+  --bg-secondary: #f3e8f7;
+  --text-primary: var(--color-navy-900);
+  --text-secondary: var(--color-navy-800);
+  --accent: var(--color-flame-500);
+  --accent-hover: var(--color-flame-600);
+  --divider: var(--color-purple-300);
+  
+  /* ========================================
+     TYPOGRAPHY SCALE
+     ======================================== */
+  
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 3rem;        /* 48px */
+  
+  /* ========================================
+     SPACING SCALE
+     ======================================== */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-24: 6rem;     /* 96px */
+}
+
+/* ========================================
+   DARK MODE THEME
+   ======================================== */
+
+.dark {
+  --bg-primary: var(--color-navy-950);
+  --bg-secondary: var(--color-navy-900);
+  --text-primary: var(--color-silver-200);
+  --text-secondary: var(--color-silver-300);
+  --accent: var(--color-flame-500);
+  --accent-hover: var(--color-flame-600);
+  --divider: var(--color-navy-800);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* ========================================
+   ACCESSIBILITY - Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

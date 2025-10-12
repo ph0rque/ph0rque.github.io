@@ -1,13 +1,10 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-
 export interface Props {
-  project: CollectionEntry<'projects'>;
-  index: number;
+  project: any;
 }
 
-const { project, index } = Astro.props;
-const { data } = project;
+const { project } = Astro.props;
+const data = project;
 
 // Extract YouTube video ID from URL
 function getYouTubeId(url: string): string | null {
@@ -20,12 +17,12 @@ const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/
 ---
 
 <article 
-  class="project-card group cursor-pointer"
-  data-project-id={project.id}
-  data-project-index={index}
+  class="project-card group cursor-pointer rounded-xl p-4 border transition-all duration-200 hover:-translate-y-1"
+  style="background-color: var(--bg-secondary); border-color: var(--divider);"
+  data-project-id={data.id}
 >
   <!-- Video Thumbnail -->
-  <div class="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4">
+  <div class="relative aspect-video rounded-lg overflow-hidden mb-4" style="background-color: var(--bg-primary);">
     <img 
       src={thumbnailUrl} 
       alt={`${data.title} preview`}
@@ -34,13 +31,13 @@ const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/
     />
     <!-- Play/View button overlay -->
     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
-      <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+      <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background-color: var(--accent);">
         {data.urlType === 'video' ? (
-          <svg class="w-8 h-8 text-gray-900 ml-1" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
           </svg>
         ) : (
-          <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
           </svg>
         )}
@@ -50,27 +47,34 @@ const thumbnailUrl = data.videoThumbnail || (videoId ? `https://img.youtube.com/
   
   <!-- Project Info -->
   <div class="space-y-2">
-    <h3 class="text-lg font-semibold group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+    <h3 class="text-lg font-semibold transition-colors" style="color: var(--text-primary);">
       {data.title}
     </h3>
-    <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+    <p class="text-sm line-clamp-2" style="color: var(--text-secondary);">
       {data.description}
     </p>
     <!-- Tech tags -->
     <div class="flex flex-wrap gap-2">
       {data.technologies.slice(0, 3).map(tech => (
-        <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-gray-700 dark:text-gray-300">
+        <span class="text-xs px-3 py-1 rounded text-sm font-medium" style="background-color: rgba(255, 123, 61, 0.1); color: var(--accent);">
           {tech}
         </span>
       ))}
       {data.technologies.length > 3 && (
-        <span class="text-xs px-2 py-1 text-gray-500 dark:text-gray-400">
+        <span class="text-xs px-2 py-1" style="color: var(--text-secondary);">
           +{data.technologies.length - 3} more
         </span>
       )}
     </div>
   </div>
 </article>
+
+<style>
+  .project-card:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 8px 24px rgba(255, 123, 61, 0.2);
+  }
+</style>
 
 <style>
   .line-clamp-2 {

@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '@components/ProjectCard.astro';
+import ProjectModalWrapper from '@components/ProjectModalWrapper.astro';
+
+const projects = await getCollection('projects');
+const sortedProjects = projects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+---
+
+<div class="project-gallery">
+  <h2 class="text-4xl font-bold mb-8" style="color: var(--text-primary)">Projects</h2>
+  
+  <div class="grid grid-cols-1 gap-6">
+    {sortedProjects.map((project) => (
+      <ProjectCard project={project.data} />
+    ))}
+  </div>
+  
+  <ProjectModalWrapper projects={sortedProjects.map(p => p.data)} />
+</div>
+

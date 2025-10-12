@@ -1,82 +1,30 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
-
-const navItems = [
-  { href: '/about/', label: 'About' },
-  { href: '/contact/', label: 'Contact' }
-];
-
-const currentPath = Astro.url.pathname;
-
-// Helper function to check if current path matches nav item
-const isActive = (href: string) => {
-  const cleanPath = currentPath.endsWith('/') && currentPath !== '/'
-    ? currentPath.slice(0, -1) 
-    : currentPath;
-  const cleanHref = href.endsWith('/') && href !== '/'
-    ? href.slice(0, -1) 
-    : href;
-  return cleanPath === cleanHref;
-};
+import SocialLinks from './SocialLinks.astro';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b" style="background-color: rgba(var(--bg-secondary), 0.8); border-color: var(--divider);">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo/Name -->
-      <a href="/" class="text-xl font-semibold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+    <div class="flex items-center justify-between h-20">
+      <!-- Left: Name -->
+      <a href="/" class="text-xl font-semibold transition-colors" style="color: var(--text-primary);">
         Andrew Shindyapin
       </a>
       
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-8">
-        {navItems.map(item => (
-          <a 
-            href={item.href} 
-            class={`text-sm font-medium transition-colors hover:text-gray-600 dark:hover:text-gray-300 ${
-              isActive(item.href) ? 'text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'
-            }`}
-          >
-            {item.label}
-          </a>
-        ))}
-        <ThemeToggle />
+      <!-- Center: Logo space (will be filled by scrolled phoenix logo) -->
+      <div class="flex-1 flex justify-center">
+        <!-- Logo appears here when scrolled -->
       </div>
       
-      <!-- Mobile Menu Button -->
-      <div class="flex md:hidden items-center space-x-4">
+      <!-- Right: Theme Toggle & Social Links -->
+      <div class="flex items-center space-x-6">
+        <div class="hidden sm:block">
+          <SocialLinks />
+        </div>
         <ThemeToggle />
-        <button
-          id="mobile-menu-button"
-          type="button"
-          class="p-2 rounded-md text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-          aria-label="Toggle menu"
-        >
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
       </div>
     </div>
   </nav>
-  
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-    <div class="px-4 py-2 space-y-1">
-      {navItems.map(item => (
-        <a 
-          href={item.href} 
-          class={`block px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 ${
-            isActive(item.href)
-              ? 'text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-800' 
-              : 'text-gray-500 dark:text-gray-400'
-          }`}
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </div>
 </header>
 
 <script>
