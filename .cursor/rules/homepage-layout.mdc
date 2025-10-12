@@ -1,0 +1,298 @@
+---
+description: Homepage split-screen layout implementation guidelines
+globs: ["src/pages/index.astro", "src/components/homepage/**/*"]
+---
+
+# Homepage Split-Screen Layout
+
+## Layout Architecture
+
+The homepage uses a unique vertical split-screen design with a phoenix logo divider. Understanding this architecture is critical for implementation.
+
+## Core Layout Structure
+
+```
+┌────────────────────────────────────────────┐
+│              Header (fixed)                 │
+├──────────────┬──────┬──────────────────────┤
+│              │      │                       │
+│   Left Pane  │ Logo │   Right Pane         │
+│   (37.5%)    │(25%) │   (37.5%)            │
+│              │      │                       │
+│   - About    │      │   - Project Gallery   │
+│   - Contact  │      │                       │
+│              │      │                       │
+└──────────────┴──────┴──────────────────────┘
+```
+
+## Phoenix Logo Divider Behavior
+
+### Initial State (No Scroll)
+```tsx
+{
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '25vw',
+  height: 'auto',
+  zIndex: 10,
+  opacity: 1
+}
+```
+
+### Scrolled State (scrollY > 100px)
+```tsx
+{
+  position: 'fixed',
+  top: '40px', // Header height / 2
+  left: '50%',
+  transform: 'translate(-50%, -50%) scale(0.3)',
+  height: '60px',
+  width: 'auto',
+  zIndex: 50,
+  transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)'
+}
+```
+
+### Implementation Notes
+- Use `useState` + scroll event listener in React component
+- Trigger animation at `window.scrollY > 100`
+- Use CSS transforms for GPU acceleration
+- Add `will-change: transform` during transition
+- Remove `will-change` after animation completes
+
+## Scroll Synchronization
+
+### Requirements
+- Both panes must scroll together
+- User can scroll from either side
+- Scroll position stays synchronized
+- Prevent infinite loops
+
+### Implementation Pattern
+```tsx
+const SplitScreenLayout = () => {
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const syncScroll = (source: 'left' | 'right') => {
+    if (isScrolling) return;
+    
+    setIsScrolling(true);
+    requestAnimationFrame(() => {
+      if (source === 'left' && leftRef.current && rightRef.current) {
+        rightRef.current.scrollTop = leftRef.current.scrollTop;
+      } else if (source === 'right' && leftRef.current && rightRef.current) {
+        leftRef.current.scrollTop = rightRef.current.scrollTop;
+      }
+      setIsScrolling(false);
+    });
+  };
+
+  return (
+    <div className="split-container">
+      <div ref={leftRef} onScroll={() => syncScroll('left')}>
+        {/* Left content */}
+      </div>
+      <div ref={rightRef} onScroll={() => syncScroll('right')}>
+        {/* Right content */}
+      </div>
+    </div>
+  );
+};
+```
+
+### Edge Cases
+- Handle touch scrolling on mobile
+- Handle keyboard scrolling (Page Up/Down, Space)
+- Handle scroll wheel momentum
+- Debounce if performance issues occur
+
+## Responsive Breakpoints
+
+### Desktop (>= 1024px)
+- Split-screen layout active
+- Both panes visible
+- Logo in center divider
+- Synchronized scrolling
+
+### Tablet/Mobile (< 1024px)
+- Single column layout
+- Stack vertically: About → Contact → Projects
+- Logo in header (smaller size)
+- Normal scroll behavior
+- No scroll synchronization needed
+
+### Transition Strategy
+```css
+@media (max-width: 1023px) {
+  .split-container {
+    flex-direction: column;
+  }
+  
+  .left-pane,
+  .right-pane {
+    width: 100%;
+    height: auto;
+    overflow-y: visible;
+  }
+  
+  .logo-divider {
+    display: none;
+  }
+}
+```
+
+## Component Hierarchy
+
+```
+index.astro
+└── SplitScreenLayout.tsx (client:load)
+    ├── PhoenixDivider.tsx (logo + scroll animation)
+    ├── LeftPane
+    │   ├── AboutSection.astro
+    │   └── ContactSection.tsx (client:load)
+    │       └── ContactForm.tsx
+    └── RightPane
+        └── ProjectGallery.astro
+            └── ProjectCard.astro[]
+```
+
+## Component Responsibilities
+
+### SplitScreenLayout.tsx
+- Manages scroll synchronization
+- Provides refs to child panes
+- Handles responsive layout switching
+- Coordinates with PhoenixDivider for scroll state
+
+### PhoenixDivider.tsx
+- Detects scroll position
+- Animates logo transform
+- Communicates with header (if needed)
+- Manages z-index states
+
+### LeftPane / RightPane
+- Fixed height: 100vh on desktop
+- Overflow-y: auto (scrollable)
+- Padding and content spacing
+- Background colors from design system
+
+## CSS Requirements
+
+### Container
+```css
+.split-screen-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+```
+
+### Panes
+```css
+.left-pane,
+.right-pane {
+  width: 37.5%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4rem;
+  background: var(--bg-primary);
+}
+```
+
+### Logo Divider Column
+```css
+.logo-divider-column {
+  width: 25%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--divider);
+  border-right: 1px solid var(--divider);
+}
+```
+
+## Performance Considerations
+
+### Scroll Performance
+- Use passive event listeners: `{ passive: true }`
+- Throttle/debounce if experiencing jank
+- Use `requestAnimationFrame` for sync operations
+- Avoid layout recalculation in scroll handlers
+
+### Animation Performance
+- Use `transform` and `opacity` only
+- Add `will-change: transform` before animation
+- Remove `will-change` after animation
+- Target 60fps (16.67ms per frame)
+
+### Layout Containment
+```css
+.left-pane,
+.right-pane {
+  contain: layout style paint;
+}
+```
+
+## Accessibility
+
+### Keyboard Navigation
+- Ensure both panes are keyboard scrollable
+- Focus management when switching between panes
+- Skip links to jump between sections
+
+### Screen Readers
+- Announce layout structure clearly
+- Provide meaningful region labels
+```html
+<div role="complementary" aria-label="About and Contact">
+<div role="main" aria-label="Project Gallery">
+```
+
+### Reduced Motion
+```css
+@media (prefers-reduced-motion: reduce) {
+  .phoenix-logo {
+    transition: none !important;
+  }
+}
+```
+
+## Testing Checklist
+
+- [ ] Scroll synchronization works from both sides
+- [ ] Logo animates smoothly at threshold
+- [ ] No scroll jank or performance issues
+- [ ] Mobile layout stacks correctly
+- [ ] Keyboard scrolling works
+- [ ] Touch scrolling works on mobile
+- [ ] Focus indicators visible
+- [ ] Screen reader announces structure
+- [ ] Works in all target browsers
+- [ ] Handles edge cases (scroll momentum, etc.)
+
+## Common Pitfalls
+
+### ❌ Don't
+- Don't use position absolute for panes (breaks layout)
+- Don't animate width/height (causes reflow)
+- Don't forget to remove scroll listeners on unmount
+- Don't hardcode viewport dimensions
+- Don't sync scroll on every scroll event (causes loops)
+
+### ✅ Do
+- Use flexbox for split layout
+- Animate transform/opacity only
+- Clean up event listeners properly
+- Use viewport units (vh, vw)
+- Debounce/use flags to prevent sync loops
+- Test scroll synchronization thoroughly
+- Handle edge cases gracefully

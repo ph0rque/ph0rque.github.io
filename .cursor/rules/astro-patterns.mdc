@@ -1,0 +1,568 @@
+---
+description: Astro-specific patterns and best practices for this portfolio
+globs: ["src/**/*.astro", "src/**/*.tsx"]
+---
+
+# Astro Implementation Patterns
+
+## Islands Architecture
+
+### When to Use .astro vs .tsx
+
+**Use .astro for:**
+- Static content that doesn't need client-side JavaScript
+- Server-side rendering only
+- Layout components
+- Content presentation
+- SEO-critical content
+
+**Use .tsx (React) for:**
+- Interactive UI components (forms, toggles, modals)
+- State management requirements
+- Event handlers
+- Dynamic behavior
+
+### Hydration Directives
+
+```astro
+<!-- Load immediately when page loads -->
+<Component client:load />
+
+<!-- Load when component is visible -->
+<Component client:visible />
+
+<!-- Load when browser is idle -->
+<Component client:idle />
+
+<!-- Only render on client, skip SSR -->
+<Component client:only="react" />
+
+<!-- No JS sent to client (default) -->
+<Component />
+```
+
+**Our Usage Pattern:**
+- `client:load`: ContactForm, ThemeToggle, SplitScreenLayout
+- No directive: ProjectCard, Header, Footer (static)
+
+## Content Collections
+
+### Project Data Structure
+
+All projects stored in `src/content/projects/*.json`:
+
+```json
+{
+  "id": "project-slug",
+  "title": "Project Name",
+  "description": "Short description",
+  "fullDescription": "Detailed description",
+  "technologies": ["React", "Node.js"],
+  "videoUrl": "https://youtube.com/watch?v=...",
+  "links": {
+    "live": "https://...",
+    "github": "https://...",
+    "other": [
+      { "label": "Blog Post", "url": "https://..." }
+    ]
+  },
+  "featured": true,
+  "order": 1
+}
+```
+
+### Accessing Collections
+
+```astro
+---
+import { getCollection } from 'astro:content';
+
+// Get all projects
+const projects = await getCollection('projects');
+
+// Get projects sorted by order
+const sortedProjects = projects
+  .sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+// Get featured projects only
+const featured = projects.filter(p => p.data.featured);
+---
+```
+
+### Type Safety
+
+Types are automatically generated from `src/content/config.ts`:
+
+```typescript
+import { defineCollection, z } from 'astro:content';
+
+const projects = defineCollection({
+  type: 'data',
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    // ... etc
+  })
+});
+
+export const collections = { projects };
+```
+
+## Component Patterns
+
+### Standard Astro Component Structure
+
+```astro
+---
+// 1. Imports
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Component from '@components/Component.astro';
+
+// 2. Props Interface
+interface Props {
+  title: string;
+  description?: string;
+}
+
+// 3. Props Destructuring
+const { title, description = 'Default value' } = Astro.props;
+
+// 4. Data Fetching / Logic
+const data = await fetchData();
+
+// 5. Derived Values
+const formattedTitle = title.toUpperCase();
+---
+
+<!-- 6. Template -->
+<BaseLayout title={title}>
+  <div class="container">
+    <h1>{formattedTitle}</h1>
+    {description && <p>{description}</p>}
+    <Component data={data} />
+  </div>
+</BaseLayout>
+
+<!-- 7. Scoped Styles (use sparingly, prefer Tailwind) -->
+<style>
+  .container {
+    /* Only for truly unique styles */
+  }
+</style>
+```
+
+### React Component in Astro
+
+```tsx
+// Component.tsx
+import { useState } from 'react';
+
+interface Props {
+  initialValue?: string;
+}
+
+export default function Component({ initialValue = '' }: Props) {
+  const [value, setValue] = useState(initialValue);
+  
+  return (
+    <div>
+      <input 
+        value={value} 
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </div>
+  );
+}
+```
+
+```astro
+---
+// Page.astro
+import Component from '@components/Component';
+---
+
+<Component client:load initialValue="Hello" />
+```
+
+## Import Aliases
+
+Configured in `tsconfig.json`:
+
+```typescript
+{
+  "compilerOptions": {
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@content/*": ["src/content/*"]
+    }
+  }
+}
+```
+
+**Always use aliases for imports:**
+```typescript
+// ✅ Good
+import Header from '@components/Header.astro';
+
+// ❌ Bad
+import Header from '../../components/Header.astro';
+```
+
+## Styling Approach
+
+### Primary: Tailwind Utility Classes
+
+```astro
+<div class="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+    Title
+  </h1>
+</div>
+```
+
+### Secondary: Design System Variables
+
+```astro
+<div class="p-4 bg-[var(--bg-primary)] text-[var(--text-primary)]">
+  <button class="bg-[var(--accent)] hover:bg-[var(--accent-hover)]">
+    Click Me
+  </button>
+</div>
+```
+
+### Tertiary: Scoped Styles (Rare)
+
+```astro
+<div class="custom-gradient"></div>
+
+<style>
+  .custom-gradient {
+    background: linear-gradient(
+      to right,
+      var(--color-purple-400),
+      var(--color-flame-500)
+    );
+  }
+</style>
+```
+
+### Global Styles
+
+Location: `src/styles/global.css`
+
+Only use for:
+- CSS resets
+- Base element styles
+- CSS custom properties
+- Truly global utilities
+
+## Layout Pattern
+
+### BaseLayout Usage
+
+Every page should use `BaseLayout`:
+
+```astro
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Page Title - Andrew Shindyapin"
+  description="Page description for SEO"
+>
+  <main class="container mx-auto">
+    <!-- Page content -->
+  </main>
+</BaseLayout>
+```
+
+### BaseLayout Responsibilities
+- HTML boilerplate (`<html>`, `<head>`, `<body>`)
+- Meta tags (SEO, Open Graph)
+- Theme initialization
+- Global styles import
+- Consistent page structure
+
+## Page Routing
+
+File-based routing in `src/pages/`:
+
+```
+src/pages/
+├── index.astro          → /
+├── about.astro          → /about
+├── contact.astro        → /contact
+├── 404.astro           → 404 page
+└── projects/
+    └── [slug].astro    → /projects/:slug (dynamic)
+```
+
+### Dynamic Routes Example
+
+```astro
+---
+// src/pages/projects/[slug].astro
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<h1>{project.data.title}</h1>
+```
+
+## Performance Best Practices
+
+### Image Optimization
+
+```astro
+---
+import { Image } from 'astro:assets';
+import myImage from '../images/photo.jpg';
+---
+
+<!-- Optimized with Astro's Image component -->
+<Image 
+  src={myImage} 
+  alt="Description"
+  width={800}
+  height={600}
+  loading="lazy"
+/>
+
+<!-- Or for external/public images -->
+<img 
+  src="/public/image.jpg" 
+  alt="Description"
+  loading="lazy"
+  width="800"
+  height="600"
+/>
+```
+
+### Lazy Loading
+
+```astro
+---
+// Heavy component - load only when visible
+import HeavyComponent from '@components/HeavyComponent';
+---
+
+<HeavyComponent client:visible />
+```
+
+### Prefetching
+
+```astro
+<a href="/about" data-astro-prefetch>About</a>
+```
+
+## Error Handling
+
+### 404 Page
+
+`src/pages/404.astro` automatically handles not found routes.
+
+### Error Boundaries
+
+For React components with errors:
+
+```tsx
+import { Component, ErrorInfo, ReactNode } from 'react';
+
+class ErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong.</div>;
+    }
+    return this.props.children;
+  }
+}
+```
+
+## TypeScript Integration
+
+### Props Typing
+
+```astro
+---
+interface Props {
+  title: string;
+  description?: string;
+  featured?: boolean;
+}
+
+const { 
+  title, 
+  description = 'Default', 
+  featured = false 
+} = Astro.props;
+---
+```
+
+### Shared Types
+
+Location: `src/types/`
+
+```typescript
+// src/types/project.ts
+export interface Project {
+  id: string;
+  title: string;
+  // ... etc
+}
+```
+
+Import and use:
+```astro
+---
+import type { Project } from '@types/project';
+
+const projects: Project[] = await getCollection('projects');
+---
+```
+
+## Build & Development
+
+### Development
+
+```bash
+npm run dev
+# Server runs at http://localhost:4321
+```
+
+### Production Build
+
+```bash
+npm run build
+# Output in ./dist/
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Common Patterns in This Project
+
+### Theme Toggle
+
+```astro
+---
+// Detect theme and apply to root
+---
+
+<script>
+  const theme = localStorage.getItem('theme') || 
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+</script>
+```
+
+### Modal Pattern
+
+```astro
+---
+// Wrapper fetches data (server)
+import ProjectModal from './ProjectModal';
+const projects = await getCollection('projects');
+---
+
+<!-- React component handles interaction (client) -->
+<ProjectModal client:load projects={projects} />
+```
+
+### Navigation State
+
+```astro
+---
+const currentPath = Astro.url.pathname;
+---
+
+<a 
+  href="/about" 
+  class={currentPath === '/about' ? 'active' : ''}
+>
+  About
+</a>
+```
+
+## Testing with Playwright
+
+Tests located in `test/tests/`:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('homepage loads', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('h1')).toBeVisible();
+});
+```
+
+Run tests:
+```bash
+npm run test
+npm run test:ui
+```
+
+## Deployment (GitHub Pages)
+
+Build output must be static files:
+- No server-side runtime
+- No API routes
+- All routes pre-rendered
+- Assets in `/dist/`
+
+Configure in `astro.config.mjs`:
+```javascript
+export default defineConfig({
+  site: 'https://username.github.io',
+  base: '/repository-name',
+  output: 'static'
+});
+```
+
+## Don'ts
+
+- ❌ Don't use server-side features not available in static builds
+- ❌ Don't add `client:load` to everything (bloats JS bundle)
+- ❌ Don't put logic in templates (keep in frontmatter)
+- ❌ Don't use React for static content
+- ❌ Don't forget alt text on images
+- ❌ Don't hardcode URLs (use Astro.site)
+
+## Do's
+
+- ✅ Maximize static generation
+- ✅ Use islands for interactivity
+- ✅ Leverage content collections
+- ✅ Import components with aliases
+- ✅ Type everything with TypeScript
+- ✅ Test responsive designs
+- ✅ Optimize images and assets
