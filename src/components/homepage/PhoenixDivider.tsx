@@ -1,18 +1,31 @@
 import { useState, useEffect } from 'react';
 
-interface PhoenixDividerProps {
-  scrolled: boolean;
-}
-
-export default function PhoenixDivider({ scrolled }: PhoenixDividerProps) {
+export default function PhoenixDivider() {
+  const [scrolled, setScrolled] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (scrolled !== isAnimating) {
-      setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 400);
-      return () => clearTimeout(timer);
-    }
+    const handleScroll = () => {
+      const root = document.querySelector('[data-component="split-screen"]');
+      if (!root) return;
+      const leftPane = root.querySelector<HTMLDivElement>('[data-pane="left"]');
+      const rightPane = root.querySelector<HTMLDivElement>('[data-pane="right"]');
+
+      const scrollY = window.scrollY || leftPane?.scrollTop || rightPane?.scrollTop || 0;
+      const shouldShrink = scrollY > 100;
+
+      if (shouldShrink !== scrolled) {
+        setScrolled(shouldShrink);
+        setIsAnimating(true);
+        setTimeout(() => setIsAnimating(false), 400);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [scrolled]);
 
   return (
@@ -22,8 +35,8 @@ export default function PhoenixDivider({ scrolled }: PhoenixDividerProps) {
         position: 'fixed',
         top: scrolled ? '40px' : '50%',
         left: '50%',
-        transform: scrolled 
-          ? 'translate(-50%, -50%) scale(0.3)' 
+        transform: scrolled
+          ? 'translate(-50%, -50%) scale(0.3)'
           : 'translate(-50%, -50%) scale(1)',
         transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)',
         willChange: isAnimating ? 'transform' : 'auto',

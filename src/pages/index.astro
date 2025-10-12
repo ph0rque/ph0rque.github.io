@@ -4,7 +4,7 @@ import Header from '@components/Header.astro';
 import AboutSection from '@components/homepage/AboutSection.astro';
 import ContactSection from '@components/homepage/ContactSection';
 import ProjectGallery from '@components/homepage/ProjectGallery.astro';
-import SplitScreenLayout from '@components/homepage/SplitScreenLayout';
+import SplitScreenLayout from '@components/homepage/SplitScreenLayout.astro';
 ---
 
 <BaseLayout title="Andrew Shindyapin Portfolio">
@@ -12,11 +12,11 @@ import SplitScreenLayout from '@components/homepage/SplitScreenLayout';
   
   <main>
     <SplitScreenLayout client:load>
-      <div>
+      <div slot="left">
         <AboutSection />
         <ContactSection client:load />
       </div>
-      <div>
+      <div slot="right">
         <ProjectGallery />
       </div>
     </SplitScreenLayout>

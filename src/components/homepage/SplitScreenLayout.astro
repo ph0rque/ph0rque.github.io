@@ -1,0 +1,15 @@
+---
+import PhoenixDivider from './PhoenixDivider';
+---
+
+<div data-component="split-screen" class="split-screen-container">
+  <div class="split-pane left-pane" data-pane="left">
+    <slot name="left" />
+  </div>
+
+  <PhoenixDivider client:load />
+
+  <div class="split-pane right-pane" data-pane="right">
+    <slot name="right" />
+  </div>
+</div>

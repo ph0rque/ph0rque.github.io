@@ -22,36 +22,31 @@ Complete redesign of the portfolio homepage to feature a vertical split-screen l
 ```
 ┌──────────────────────────────────────────────────┐
 │                    Header                        │
-├──────────────┬─────────┬──────────────────────┤
-│              │         │                        │
-│   About      │ Phoenix │   Project Gallery     │
-│   Content    │  Logo   │   (Grid/List)         │
-│              │ (25%)   │                        │
-│              │         │                        │
-│   Bio        │         │   [Project Card]      │
-│   Text       │         │   [Project Card]      │
-│              │         │   [Project Card]      │
-│              │         │                        │
-│   Contact    │         │   [Project Card]      │
-│   Form       │         │   [Project Card]      │
-│              │         │   [Project Card]      │
-│              │         │                        │
-└──────────────┴─────────┴──────────────────────┘
+├─────────────────────────────┬────────────────────┤
+│                             │                    │
+│          About +            │  Phoenix logo      │
+│          Contact            │  floats above      │
+│          (50%)              │  centered content  │
+│                             │                    │
+│  - Bio / About text         │  Project Gallery   │
+│  - Social links             │  (50%)             │
+│  - Contact form             │  [Project Card]    │
+│                             │  [Project Card]    │
+│                             │  [Project Card]    │
+└─────────────────────────────┴────────────────────┘
 ```
 
 **Initial State (Before Scroll):**
-- Logo occupies 25% of viewport width
-- Logo centered vertically and horizontally in its column
-- Left side (37.5%): About content starts at top
-- Right side (37.5%): Project gallery starts at top
-- Header present but minimal
+- Logo overlaid in the center of the viewport (20vw width, max 400px) with both columns visible beneath
+- Left side (50%): About content stacked above the contact form
+- Right side (50%): Project gallery grid
+- Header present but minimal to keep focus on the split columns
 
 **Scroll State (After Scroll Begins):**
-- Logo shrinks and transitions to header center
-- Logo size reduces to header-appropriate dimensions
+- Logo shrinks and transitions to header center (60px tall)
 - Logo remains fixed at top center of viewport
 - Both sides continue synchronized scrolling
-- Vertical divider line remains between the two sides
+- No vertical divider column; subtle border on right column provides separation
 
 ### Tablet/Mobile Layout (< 1024px)
 
@@ -73,9 +68,9 @@ Complete redesign of the portfolio homepage to feature a vertical split-screen l
 └──────────────────────┘
 ```
 
-- Single column, vertical stack
+- Switches to single column vertical stack
 - Order: Header → About → Contact → Projects
-- Natural scroll behavior
+- Natural scroll behavior (no sync)
 - Logo in header, shrinks on scroll
 
 ---
@@ -171,58 +166,58 @@ Complete redesign of the portfolio homepage to feature a vertical split-screen l
 ### 1. Phoenix Logo Divider
 
 **Initial State:**
-- Position: Fixed, center of viewport
-- Width: 25vw (25% of viewport width)
+- Position: Fixed, centered over both columns
+- Width: 20vw (max 400px)
 - Height: Auto (maintain aspect ratio)
-- Z-index: 10 (above content, below modals)
+- Z-index: 40 (above columns, below modals)
 - Opacity: 1
-- Transform: scale(1)
+- Transform: translate(-50%, -50%) scale(1)
 
 **Scroll Transition:**
-- Trigger: When window.scrollY > 100px
+- Trigger: When window.scrollY > 100px or either pane scrollTop > 100px
 - Duration: 400ms
 - Easing: cubic-bezier(0.4, 0, 0.2, 1)
 - Target position: Fixed at top center of viewport
 - Target size: Height 60px (width auto, maintains aspect)
-- Transform: translateY(-50vh) scale(0.3)
+- Transform: translate(-50%, -50%) scale(0.3)
 
 **Visual Treatment:**
 - Drop shadow: subtle glow effect
 - No background
-- PNG with transparency
+- Phoenix logo PNG with transparency (`public/phoenix-logo.png`)
 
 ### 2. Split-Screen Container
 
 **Left Side (About + Contact):**
-- Width: 37.5% (desktop), 100% (mobile)
+- Width: 50% (desktop), 100% (mobile)
 - Padding: 2rem - 4rem
 - Background: var(--bg-primary)
 - Overflow-y: auto
 - Height: 100vh
 
 **Right Side (Projects):**
-- Width: 37.5% (desktop), 100% (mobile)
+- Width: 50% (desktop), 100% (mobile)
 - Padding: 2rem - 4rem
 - Background: var(--bg-primary)
+- Border-left: 1px solid var(--divider) (visual separation)
 - Overflow-y: auto
 - Height: 100vh
 
 **Divider:**
-- Width: 1px
-- Background: var(--divider)
-- Height: 100vh
-- Position: Fixed at 50% (or integrated with logo column)
+- No dedicated column; phoenix logo overlays both panes
+- Subtle border on project column provides separation
 
 **Scroll Synchronization:**
 ```javascript
-// Pseudo-code
-onScrollLeftSide = (event) => {
-  rightSide.scrollTop = leftSide.scrollTop;
-}
-
-onScrollRightSide = (event) => {
-  leftSide.scrollTop = rightSide.scrollTop;
-}
+const syncScroll = (source) => {
+  if (isSyncing || window.innerWidth < 1024) return;
+  isSyncing = true;
+  requestAnimationFrame(() => {
+    if (source === 'left') rightPane.scrollTop = leftPane.scrollTop;
+    else leftPane.scrollTop = rightPane.scrollTop;
+    isSyncing = false;
+  });
+};
 ```
 
 ### 3. Header
