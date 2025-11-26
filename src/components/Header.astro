@@ -22,10 +22,20 @@ const isActive = (href: string) => {
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
+    <div class="flex items-end justify-between h-20 py-2">
       <!-- Logo/Name -->
-      <a href="/" class="text-xl font-semibold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-        Andrew Shindyapin
+      <a href="/" class="flex items-end space-x-3 text-xl font-semibold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+        <img 
+          src="/logo.svg" 
+          alt="Andrew Shindyapin logo" 
+          class="h-40 w-auto drop-shadow-sm -mb-16"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="pb-1 text-lg sm:text-xl font-semibold">
+          <span class="inline sm:hidden">Andrew</span>
+          <span class="hidden sm:inline whitespace-nowrap">Andrew Shindyapin</span>
+        </span>
       </a>
       
       <!-- Desktop Navigation -->
@@ -61,7 +71,7 @@ const isActive = (href: string) => {
   </nav>
   
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 ml-[20%] w-[80%]">
     <div class="px-4 py-2 space-y-1">
       {navItems.map(item => (
         <a 
