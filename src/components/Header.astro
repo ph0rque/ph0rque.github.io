@@ -27,7 +27,10 @@ const isActive = (href: string) => {
       <a href="/" class="flex items-end space-x-3 text-xl font-semibold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
         <span class="logo-ignite -mb-16">
           <img 
-            src="/logo.svg" 
+            src="/logo.svg"
+            data-site-logo
+            data-logo-light="/logo.svg"
+            data-logo-dark="/logo-dark.svg"
             alt="Andrew Shindyapin logo" 
             class="h-40 w-auto"
             loading="lazy"
@@ -105,5 +108,21 @@ const isActive = (href: string) => {
     if (!mobileMenuButton?.contains(target) && !mobileMenu?.contains(target)) {
       mobileMenu?.classList.add('hidden');
     }
+  });
+
+  const updateHeaderLogo = () => {
+    const img = document.querySelector('img[data-site-logo]') as HTMLImageElement | null;
+    if (!img) return;
+    const isDark = document.documentElement.classList.contains('dark');
+    const lightSrc = img.dataset.logoLight;
+    const darkSrc = img.dataset.logoDark;
+    if (!lightSrc || !darkSrc) return;
+    img.src = isDark ? darkSrc : lightSrc;
+  };
+
+  document.addEventListener('DOMContentLoaded', updateHeaderLogo);
+  window.addEventListener('themechange', updateHeaderLogo as EventListener);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'theme') updateHeaderLogo();
   });
 </script>

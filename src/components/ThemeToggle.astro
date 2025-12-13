@@ -28,7 +28,9 @@
         element.classList.toggle('dark');
         
         const isDark = element.classList.contains('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        const theme = isDark ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
       }
     });
   });

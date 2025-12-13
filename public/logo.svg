@@ -110,19 +110,6 @@
       stroke-linejoin: round;
       opacity: 0;
     }
-    @media (prefers-color-scheme: dark) {
-      .eye-darkmode {
-        fill: url(#gradient-0);
-      }
-    }
-    @media (prefers-color-scheme: light) {
-      .beak-outline {
-        opacity: 0.9;
-        stroke: rgba(71, 37, 115, 0.92);
-        stroke-width: 7;
-        filter: drop-shadow(0 0 6px rgba(94, 65, 170, 0.5));
-      }
-    }
   </style>
   <path class="shape wing-primary" d="M 90.418 178.149 C 96.604 391.168 445.99 402.952 470.339 615.244 C 521.164 373.232 213.757 365.273 90.418 178.149 Z"/>
   <path class="shape wing-secondary" d="M 102.849 305.959 C 156.946 523.795 387.562 416.477 461.845 618.761 C 444.371 434.069 250.914 448.673 102.849 305.959 Z"/>
