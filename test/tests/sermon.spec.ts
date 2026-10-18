@@ -36,7 +36,7 @@ test.describe('Ambient Bible Immersion', () => {
     await expect(page.getByRole('link', { name: 'Система чтения Библии профессора Хорнера', exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Библейское приложение YouVersion', exact: true })).toBeVisible();
     await expect(page.getByText('План, инструкции и десять списков для чтения.', { exact: false })).toBeVisible();
-    await expect(page.getByText('Читайте или слушайте Библию и выберите план чтения.', { exact: true })).toBeVisible();
+    await expect(page.getByText('Читайте или слушайте Библию.', { exact: true })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
     await expect(page.locator('body > header')).toHaveCount(0);
     await expect(page.locator('body > footer')).toHaveAttribute('lang', 'en');
