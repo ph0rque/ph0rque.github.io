@@ -1,0 +1,212 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import { Content as EnglishOutline } from '../../sermons/ambient-bible-immersion.en.md';
+import { Content as RussianOutline } from '../../sermons/ambient-bible-immersion.ru.md';
+---
+
+<BaseLayout
+  title="Ambient Bible Immersion - Andrew Shindyapin"
+  description="Sermon outlines in English and Russian, Professor Horner's Bible reading system, and resources for regular Bible reading."
+>
+  <Header />
+
+  <main class="sermon-page">
+    <header class="sermon-heading">
+      <div class="heading-row">
+        <div class="heading-copy">
+          <p class="eyebrow">
+            <span data-page-language="en" lang="en">Romans 12:1-2</span>
+            <span data-page-language="ru" lang="ru">Римлянам 12:1-2</span>
+          </p>
+          <h1>
+            <span data-page-language="en" lang="en">Ambient Bible Immersion</span>
+            <span data-page-language="ru" lang="ru">Ежедневное погружение в Библию</span>
+          </h1>
+        </div>
+        <div class="language-tabs" role="tablist" aria-label="Page language" hidden>
+          <button type="button" id="tab-en" role="tab" aria-controls="outline-en" aria-selected="true" data-language="en" lang="en">English</button>
+          <button type="button" id="tab-ru" role="tab" aria-controls="outline-ru" aria-selected="false" tabindex="-1" data-language="ru" lang="ru">Русский</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="resources" aria-labelledby="resources-heading">
+      <h2 id="resources-heading">
+        <span data-page-language="en" lang="en">Resources</span>
+        <span data-page-language="ru" lang="ru">Материалы</span>
+      </h2>
+      <ul class="resource-list">
+        <li>
+          <a href="https://bethelpreschurch.org/wp-content/uploads/2018/05/Professor_Horner_s_Bible_Reading_Plan.pdf">
+            <span data-page-language="en" lang="en">Professor Horner's Bible Reading System</span>
+            <span data-page-language="ru" lang="ru">Система чтения Библии профессора Хорнера</span>
+          </a>
+          <p>
+            <span data-page-language="en" lang="en">The plan, instructions, and ten reading lists.</span>
+            <span data-page-language="ru" lang="ru">План, инструкции и десять списков для чтения.</span>
+            <span class="file-type">PDF</span>
+          </p>
+        </li>
+        <li>
+          <a href="https://www.bible.com/app">
+            <span data-page-language="en" lang="en">YouVersion Bible App</span>
+            <span data-page-language="ru" lang="ru">Библейское приложение YouVersion</span>
+          </a>
+          <p>
+            <span data-page-language="en" lang="en">Read or listen to the Bible and find a reading plan.</span>
+            <span data-page-language="ru" lang="ru">Читайте или слушайте Библию и выберите план чтения.</span>
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="sermon-outline" aria-labelledby="outline-heading">
+      <div class="outline-toolbar">
+        <h2 id="outline-heading">
+          <span data-page-language="en" lang="en">Sermon outline</span>
+          <span data-page-language="ru" lang="ru">Конспект проповеди</span>
+        </h2>
+      </div>
+
+      <article id="outline-en" class="outline-text" lang="en" aria-label="English sermon outline">
+        <EnglishOutline />
+      </article>
+      <article id="outline-ru" class="outline-text" lang="ru" aria-label="Конспект проповеди на русском">
+        <RussianOutline />
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-language]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('.outline-text'));
+  const translatedText = document.querySelectorAll<HTMLElement>('[data-page-language]');
+  const tablist = document.querySelector<HTMLElement>('.language-tabs');
+
+  function selectLanguage(language: string, updateUrl = true) {
+    const selectedLanguage = language === 'ru' ? 'ru' : 'en';
+    for (const tab of tabs) {
+      const selected = tab.dataset.language === selectedLanguage;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    }
+    for (const panel of panels) {
+      panel.hidden = panel.lang !== selectedLanguage;
+    }
+    for (const text of translatedText) {
+      text.hidden = text.dataset.pageLanguage !== selectedLanguage;
+    }
+    document.documentElement.lang = selectedLanguage;
+    const title = document.querySelector<HTMLElement>(`h1 [data-page-language="${selectedLanguage}"]`);
+    if (title) document.title = `${title.textContent} - Andrew Shindyapin`;
+    tablist?.setAttribute('aria-label', selectedLanguage === 'ru' ? 'Язык страницы' : 'Page language');
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', selectedLanguage);
+      window.history.replaceState(null, '', url);
+    }
+  }
+
+  for (const panel of panels) {
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', `tab-${panel.lang}`);
+    panel.tabIndex = 0;
+  }
+
+  for (const [index, tab] of tabs.entries()) {
+    tab.addEventListener('click', () => selectLanguage(tab.dataset.language!));
+    tab.addEventListener('keydown', (event) => {
+      const nextIndex = {
+        ArrowRight: (index + 1) % tabs.length,
+        ArrowLeft: (index + tabs.length - 1) % tabs.length,
+        Home: 0,
+        End: tabs.length - 1,
+      }[event.key];
+      if (nextIndex === undefined) return;
+      event.preventDefault();
+      tabs[nextIndex].focus();
+      selectLanguage(tabs[nextIndex].dataset.language!);
+    });
+  }
+
+  selectLanguage(new URLSearchParams(window.location.search).get('lang') ?? 'en', false);
+  if (tablist) tablist.hidden = false;
+  window.addEventListener('popstate', () => {
+    selectLanguage(new URLSearchParams(window.location.search).get('lang') ?? 'en', false);
+  });
+</script>
+
+<style>
+  .sermon-page {
+    --muted: #535b65;
+    --rule: #d9dde2;
+    --link: #235e8a;
+    --soft: #f1f3f5;
+    width: min(100% - 3rem, 62rem);
+    margin: 0 auto;
+    padding: 4rem 0 5rem;
+    flex: 1;
+    letter-spacing: 0;
+  }
+
+  :global(.dark) .sermon-page {
+    --muted: #c2c8d0;
+    --rule: #46505e;
+    --link: #9fd3f1;
+    --soft: #29323d;
+  }
+
+  .eyebrow { color: var(--muted); font-size: 1rem; margin-bottom: 0.75rem; }
+  h1 { font-size: 2.5rem; font-weight: 650; line-height: 1.18; text-wrap: balance; }
+  .heading-row { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .heading-copy { min-width: 0; }
+  h1 { overflow-wrap: break-word; }
+  .sermon-heading { padding-bottom: 2.5rem; }
+  h2 { font-size: 1.375rem; font-weight: 600; line-height: 1.45; }
+  .resources { padding: 2rem 0 2.25rem; border-block: 1px solid var(--rule); }
+  .resource-list { list-style: none; display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+  .resource-list a { color: var(--link); font-size: 1.125rem; font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; }
+  .resource-list a:hover { text-decoration-thickness: 2px; }
+  .resource-list p { color: var(--muted); line-height: 1.6; margin-top: 0.5rem; }
+  .file-type { font-size: 0.8rem; white-space: nowrap; }
+  .outline-toolbar { padding: 2rem 0; }
+  .language-tabs:not([hidden]) { display: flex; padding: 0.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--soft); flex-shrink: 0; }
+  .language-tabs button { min-width: 6rem; min-height: 2.75rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-size: 1rem; cursor: pointer; }
+  .language-tabs button[aria-selected="true"] { background: #252a31; color: white; }
+  :global(.dark) .language-tabs button[aria-selected="true"] { background: #f1f3f5; color: #252a31; }
+  a:focus-visible, button:focus-visible, .outline-text:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; }
+  .outline-text { max-width: 46rem; margin: 0 auto; font-size: 1.125rem; line-height: 1.8; overflow-wrap: break-word; }
+  .outline-text :global(h3) { font-size: 1.5rem; line-height: 1.4; font-weight: 650; margin: 2.75rem 0 1.25rem; text-wrap: balance; }
+  .outline-text :global(h3:first-child) { margin-top: 0.5rem; }
+  .outline-text :global(p) { margin: 0 0 1.25rem; }
+  .outline-text :global(ul), .outline-text :global(ol) { padding-left: 1.5rem; margin: 0 0 1.5rem; }
+  .outline-text :global(ul) { list-style: disc; }
+  .outline-text :global(ol) { list-style: decimal; }
+  .outline-text :global(li) { padding-left: 0.25rem; margin-bottom: 1rem; }
+  .outline-text :global(blockquote) { border-left: 3px solid var(--link); margin: 1.75rem 0; padding: 0.25rem 0 0.25rem 1.25rem; }
+  .outline-text :global(blockquote p:last-child) { margin-bottom: 0; }
+  .outline-text :global(a) { color: var(--link); text-decoration: underline; text-underline-offset: 0.2em; }
+  .outline-text:not([hidden]) + .outline-text:not([hidden]) { border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: 2rem; }
+
+  @media (max-width: 640px) {
+    .sermon-page { width: min(100% - 2rem, 62rem); padding-top: 2.5rem; }
+    h1 { font-size: 2rem; }
+    .heading-row { align-items: flex-start; flex-direction: column; gap: 1.5rem; }
+    .resource-list { grid-template-columns: 1fr; gap: 1.5rem; }
+    .outline-text :global(h3) { font-size: 1.375rem; }
+  }
+
+  @media print {
+    :global(body) { background: white !important; color: black !important; }
+    :global(body > header), :global(body > footer), .language-tabs { display: none !important; }
+    .sermon-page { width: 100%; padding: 0; }
+    .sermon-page, :global(.dark) .sermon-page { --muted: #333; --link: #222; --rule: #ccc; }
+    .outline-text { max-width: none; font-size: 11pt; line-height: 1.5; }
+    .outline-text :global(h3) { break-after: avoid; }
+  }
+</style>
